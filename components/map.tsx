@@ -4,6 +4,8 @@
 import maplibregl, {
   GeoJSONSource,
   LayerSpecification,
+  NavigationControl,
+  RasterDEMSourceSpecification,
   Source,
 } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -18,25 +20,21 @@ import distance from "@turf/distance";
 // 地理院標高タイルをMapLibre GL JSで利用するためのモジュール
 import { useGsiTerrainSource } from "maplibre-gl-gsi-terrain";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function Map() {
+  const mapContainer = useRef<HTMLDivElement | null>(null);
+
   // 地形データ生成（地理院標高タイル）
-  const gsiTerrainSource = useGsiTerrainSource(maplibregl.addProtocol);
+  const gsiTerrainSource: RasterDEMSourceSpecification = useGsiTerrainSource(
+    maplibregl.addProtocol
+  );
 
-  useEffect(() => {
-    const map = initializeMap();
-    setupMapLoadEvent(map, gsiTerrainSource);
-
-    // Return a cleanup function from useEffect
-    return () => {
-      map.remove(); // This will clean up the map instance when the component unmounts
-    };
-  }, [gsiTerrainSource]);
+  let map: any;
 
   function initializeMap() {
     return new maplibregl.Map({
-      container: "map",
+      container: mapContainer.current as HTMLElement,
       style: {
         version: 8,
         sources: {
@@ -206,7 +204,7 @@ export default function Map() {
             "source-layer": "skhb",
             type: "circle",
             paint: {
-              "circle-color": "#6666cc",
+              "circle-color": "#5555dc",
               "circle-radius": [
                 // ズームレベルに応じた円の大きさ
                 "interpolate",
@@ -217,8 +215,9 @@ export default function Map() {
                 14,
                 6,
               ],
-              "circle-stroke-width": 1,
-              "circle-stroke-color": "#ffffff",
+              // "circle-stroke-width": 1,
+              // "circle-stroke-color": "#ffffff",
+              "circle-opacity": 0.8, // 透明度を追加（0 から 1 までの値）
             },
             filter: ["get", "disaster1"], // 属性:disaster1がtrueの地物のみ表示する
             layout: { visibility: "none" }, // レイヤーの表示はOpacityControlで操作するためデフォルトで非表示にしておく
@@ -229,7 +228,7 @@ export default function Map() {
             "source-layer": "skhb",
             type: "circle",
             paint: {
-              "circle-color": "#6666cc",
+              "circle-color": "#5555dc",
               "circle-radius": [
                 "interpolate",
                 ["linear"],
@@ -239,8 +238,9 @@ export default function Map() {
                 14,
                 6,
               ],
-              "circle-stroke-width": 1,
-              "circle-stroke-color": "#ffffff",
+              // "circle-stroke-width": 1,
+              // "circle-stroke-color": "#ffffff",
+              "circle-opacity": 0.8, // 透明度を追加（0 から 1 までの値）
             },
             filter: ["get", "disaster2"],
             layout: { visibility: "none" },
@@ -251,7 +251,7 @@ export default function Map() {
             "source-layer": "skhb",
             type: "circle",
             paint: {
-              "circle-color": "#6666cc",
+              "circle-color": "#5555dc",
               "circle-radius": [
                 "interpolate",
                 ["linear"],
@@ -261,8 +261,9 @@ export default function Map() {
                 14,
                 6,
               ],
-              "circle-stroke-width": 1,
-              "circle-stroke-color": "#ffffff",
+              // "circle-stroke-width": 1,
+              // "circle-stroke-color": "#ffffff",
+              "circle-opacity": 0.8, // 透明度を追加（0 から 1 までの値）
             },
             filter: ["get", "disaster3"],
             layout: { visibility: "none" },
@@ -273,7 +274,7 @@ export default function Map() {
             "source-layer": "skhb",
             type: "circle",
             paint: {
-              "circle-color": "#6666cc",
+              "circle-color": "#5555dc",
               "circle-radius": [
                 "interpolate",
                 ["linear"],
@@ -283,8 +284,9 @@ export default function Map() {
                 14,
                 6,
               ],
-              "circle-stroke-width": 1,
-              "circle-stroke-color": "#ffffff",
+              // "circle-stroke-width": 1,
+              // "circle-stroke-color": "#ffffff",
+              "circle-opacity": 0.8, // 透明度を追加（0 から 1 までの値）
             },
             filter: ["get", "disaster4"],
             layout: { visibility: "none" },
@@ -295,7 +297,7 @@ export default function Map() {
             "source-layer": "skhb",
             type: "circle",
             paint: {
-              "circle-color": "#6666cc",
+              "circle-color": "#5555dc",
               "circle-radius": [
                 "interpolate",
                 ["linear"],
@@ -305,8 +307,9 @@ export default function Map() {
                 14,
                 6,
               ],
-              "circle-stroke-width": 1,
-              "circle-stroke-color": "#ffffff",
+              // "circle-stroke-width": 1,
+              // "circle-stroke-color": "#ffffff",
+              "circle-opacity": 0.8, // 透明度を追加（0 から 1 までの値）
             },
             filter: ["get", "disaster5"],
             layout: { visibility: "none" },
@@ -317,7 +320,7 @@ export default function Map() {
             "source-layer": "skhb",
             type: "circle",
             paint: {
-              "circle-color": "#6666cc",
+              "circle-color": "#5555dc",
               "circle-radius": [
                 "interpolate",
                 ["linear"],
@@ -327,8 +330,9 @@ export default function Map() {
                 14,
                 6,
               ],
-              "circle-stroke-width": 1,
-              "circle-stroke-color": "#ffffff",
+              // "circle-stroke-width": 1,
+              // "circle-stroke-color": "#ffffff",
+              "circle-opacity": 0.8, // 透明度を追加（0 から 1 までの値）
             },
             filter: ["get", "disaster6"],
             layout: { visibility: "none" },
@@ -339,7 +343,7 @@ export default function Map() {
             "source-layer": "skhb",
             type: "circle",
             paint: {
-              "circle-color": "#6666cc",
+              "circle-color": "#5555dc",
               "circle-radius": [
                 "interpolate",
                 ["linear"],
@@ -349,8 +353,9 @@ export default function Map() {
                 14,
                 6,
               ],
-              "circle-stroke-width": 1,
-              "circle-stroke-color": "#ffffff",
+              // "circle-stroke-width": 1,
+              // "circle-stroke-color": "#ffffff",
+              "circle-opacity": 0.8, // 透明度を追加（0 から 1 までの値）
             },
             filter: ["get", "disaster7"],
             layout: { visibility: "none" },
@@ -361,7 +366,7 @@ export default function Map() {
             "source-layer": "skhb",
             type: "circle",
             paint: {
-              "circle-color": "#6666cc",
+              "circle-color": "#5555dc",
               "circle-radius": [
                 "interpolate",
                 ["linear"],
@@ -371,8 +376,9 @@ export default function Map() {
                 14,
                 6,
               ],
-              "circle-stroke-width": 1,
-              "circle-stroke-color": "#ffffff",
+              // "circle-stroke-width": 1,
+              // "circle-stroke-color": "#ffffff",
+              "circle-opacity": 0.8, // 透明度を追加（0 から 1 までの値）
             },
             filter: ["get", "disaster8"],
             layout: { visibility: "none" },
@@ -386,14 +392,32 @@ export default function Map() {
       maxBounds: [122, 20, 154, 50],
     });
   }
+  useEffect(() => {
+    map = initializeMap();
+    // Add zoom and rotation controls to the map.
+    let nav = new NavigationControl({});
+    map.addControl(nav, "top-right");
+  }, [map]);
 
-  function setupMapLoadEvent(map: maplibregl.Map, gsiTerrainSource: any) {
+  useEffect(() => {
+    setupMapLoadEvent(map, gsiTerrainSource);
+
+    // Return a cleanup function from useEffect
+    return () => {
+      map.remove(); // This will clean up the map instance when the component unmounts
+    };
+  }, [map, gsiTerrainSource]);
+
+  function setupMapLoadEvent(
+    map: maplibregl.Map,
+    gsiTerrainSource: RasterDEMSourceSpecification
+  ) {
     map.on("load", () => {
       const opacityControl = setupOpacityControls();
       map.addControl(opacityControl, "top-left");
 
       const opacitySkhb = setupSkhbOpacityControls();
-      map.addControl(opacitySkhb, "top-right");
+      map.addControl(opacitySkhb, "top-left");
 
       setupMapClickEvent(map);
       setupMapMouseMoveEvent(map);
@@ -612,7 +636,7 @@ export default function Map() {
     const geolocationControl = new maplibregl.GeolocateControl({
       trackUserLocation: true,
     });
-    map.addControl(geolocationControl, "bottom-right");
+    map.addControl(geolocationControl, "top-right");
     geolocationControl.on("geolocate", (e) => {
       // 位置情報が更新されるたびに発火・userLocationを更新
       userLocation = [e.coords.longitude, e.coords.latitude];
@@ -654,5 +678,9 @@ export default function Map() {
     });
   }
 
-  return <div id="map" className="h-screen" />;
+  return (
+    <div className="h-screen">
+      <div ref={mapContainer} className="h-full" />
+    </div>
+  );
 }
