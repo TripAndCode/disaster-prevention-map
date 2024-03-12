@@ -2,11 +2,9 @@
 
 // MapLibre GL JSの読み込み
 import maplibregl, {
-  GeoJSONSource,
   LayerSpecification,
   NavigationControl,
   RasterDEMSourceSpecification,
-  Source,
 } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 
@@ -117,12 +115,7 @@ export default function Map() {
           skhb: {
             // 指定緊急避難場所ベクトルタイル
             type: "vector",
-            tiles: [
-              `${location.href.replace(
-                "/index.html",
-                ""
-              )}/skhb/{z}/{x}/{y}.pbf`,
-            ],
+            tiles: [`${location.origin}/skhb/{z}/{x}/{y}.pbf`],
             minzoom: 5,
             maxzoom: 8,
             attribution:
